@@ -10,8 +10,8 @@ const int Pir=4;//人體感應器腳位D2
 const int Relay=0;//繼電器腳位D3
 const int Dht=2;//dht22腳位D4
 const int Co=A0;//CO腳位
-const char* ssid = "";
-const char* password = "";
+const char* ssid = "Eric_tku";
+const char* password = "erictku851231";
 
 // Create an instance of the server
 // specify the port to listen on as an argument
@@ -67,9 +67,9 @@ void loop() {
   
   // Match the request
   int val;
-  if (req.indexOf("/relay/on") != -1)
+  if (req.indexOf("/on") != -1)
     val = 0;
-  else if (req.indexOf("/relay/off") != -1)
+  else if (req.indexOf("/off") != -1)
     val = 1;
   else {
     Serial.println("invalid request");
@@ -82,18 +82,23 @@ void loop() {
   float h = dht.readHumidity();//Read humidity
   float t = dht.readTemperature();// Read temperature as Celsius
   float f = dht.readTemperature(true);// Read temperature as Fahrenheit
+  if (isnan(h) || isnan(t) || isnan(f)) {
+   h = 0;
+   t = 0;
+   f = 0;
+  }
   double co = GM1602.ppm(); // Read co ppm
   int pir = digitalRead(Pir);
   client.flush();
 
   // json response
-  String s = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n{ \n";
+  String s = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{ \n";
   s += "\"relay\":"+String(val)+",\n";
   s += "\"Humit\":"+String(h,3)+",\n";
   s += "\"temperatureC\":"+String(t,3)+",\n";
   s += "\"temperatureF\":"+String(f,3)+",\n";
-  s += "\"Pir\":"+String(co,3)+",\n";
-  s += "\"gas\":"+String(pir)+",\n";
+  s += "\"Pir\":"+String(pir)+",\n";
+  s += "\"gas\":"+String(co,3)+",\n";
   s += "}\n";
 
   // Send the response to the client
