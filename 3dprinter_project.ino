@@ -92,13 +92,13 @@ void loop() {
   client.flush();
 
   // json response
-  String s = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{ \n";
-  s += "\"relay\":"+String(val)+",\n";
-  s += "\"Humit\":"+String(h,3)+",\n";
-  s += "\"temperatureC\":"+String(t,3)+",\n";
-  s += "\"temperatureF\":"+String(f,3)+",\n";
-  s += "\"Pir\":"+String(pir)+",\n";
-  s += "\"gas\":"+String(co,3)+",\n";
+  String s = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{ ";
+  s += "\"relay\":"+String(val)+",";
+  s += "\"Humit\":"+String(h,3)+",";
+  s += "\"temperatureC\":"+String(t,3)+",";
+  s += "\"temperatureF\":"+String(f,3)+",";
+  s += "\"Pir\":"+String(pir)+",";
+  s += "\"gas\":"+String(co,3)+"";
   s += "}\n";
 
   // Send the response to the client
